@@ -5,13 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace ContactManager
+namespace ContactManager//.Views
 {
 	public partial class MainPage : ContentPage
 	{
 		public MainPage()
 		{
 			InitializeComponent();
+
+            //new Button().com
+
+            
 		}
+
+        // override 
 	}
 }

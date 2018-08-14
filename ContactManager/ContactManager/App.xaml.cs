@@ -1,3 +1,4 @@
+using ContactManager.Views;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -11,8 +12,10 @@ namespace ContactManager
 		{
 			InitializeComponent();
 
-			MainPage = new MainPage();
-		}
+            MainPage = new LoaderPage();
+
+            //MainPage = new HomePage();
+        }
 
 		protected override void OnStart ()
 		{
