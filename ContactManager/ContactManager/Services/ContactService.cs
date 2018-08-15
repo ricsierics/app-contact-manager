@@ -12,6 +12,7 @@ namespace ContactManager.Services
     public class ContactService : IContactService
     {
         const string URL = "http://10.155.64.110:8080/retrieve/contacts";
+        //const string URL = "http://loanhub.apphb.com/api/reminders";
 
         public Task AddContactAsync(Contact contact)
         {

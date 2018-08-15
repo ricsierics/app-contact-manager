@@ -15,9 +15,14 @@ namespace ContactManager.Views
 	{
 		public ContactsPage (ContactsPageViewModel viewModel)
 		{
-            BindingContext = viewModel;
-
+            ViewModel = viewModel;
 			InitializeComponent ();
 		}
-	}
+
+        public ContactsPageViewModel ViewModel
+        {
+            get { return BindingContext as ContactsPageViewModel; }
+            set { BindingContext = value; }
+        }
+    }
 }

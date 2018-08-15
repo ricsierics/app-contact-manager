@@ -6,7 +6,8 @@ namespace ContactManager.ViewModels
 {
     public class HomePageViewModel
     {
-        public string TabTitleContacts { get; private set; } = "CONTACTS";
-        public string TabTitleDialPad { get; private set; } = "DIALPAD";
+        public ContactsPageViewModel ContactsPageViewModel { get; set; }
+
+        public DialPadPageViewModel DialPadPageViewModel { get; set; }
     }
 }

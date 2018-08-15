@@ -1,16 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage 
+    x:Name="page"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="ContactManager.Views.ContactsPage"
-    Title="{Binding Tab}">
+    Title="{Binding TabTitle}">
+    
     <ContentPage.Content>
         <StackLayout>
-            
-            <Label Text="{Binding Title}"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-            
+
+            <Label Text="{Binding ContactsCount, StringFormat='Contacts Displayed: {0}'}" />
+
+            <ListView
+                ItemsSource="{Binding Contacts}">
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+
+                        <ViewCell>
+
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="account.png" />
+                                
+                                <Label Text="{Binding FullName}" TextColor="Blue"  VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand" />
+                                
+                                <Image Source="favorite.png">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer 
+                                            NumberOfTapsRequired="1" 
+                                            Command="{Binding Source={x:Reference page}, Path=ViewModel.AddToFavoriteCommand}" 
+                                            CommandParameter="{Binding .}" />
+                                    </Image.GestureRecognizers>
+                                </Image>
+
+                                <Image Source="phone.png">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer 
+                                            NumberOfTapsRequired="1" 
+                                            Command="{Binding Source={x:Reference page}, Path=ViewModel.CallCommand}" 
+                                            CommandParameter="{Binding ContactNumber}" />
+                                    </Image.GestureRecognizers>
+                                </Image>
+                            </StackLayout>
+
+                            <ViewCell.ContextActions>
+                                <MenuItem Text="Edit" IsDestructive="False" Command="EditCommand" CommandParameter="{Binding .}" />
+                                <MenuItem Text="Delete" IsDestructive="True" Command="DeleteCommand" CommandParameter="{Binding .}" />
+                            </ViewCell.ContextActions>
+
+                        </ViewCell>
+                        
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+            </ListView>
+            <Button Text="ADD CONTACT" Command="{Binding AddContactCommand}" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

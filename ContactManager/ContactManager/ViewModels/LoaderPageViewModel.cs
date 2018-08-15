@@ -16,12 +16,11 @@ namespace ContactManager.ViewModels
         private bool _isDataLoaded;
         private IPageService _pageService;
         private IContactService _contactService;
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string ImageSourcePath { get; private set; } = "ContactManager.Images.call_me_maybe.png";
         public ImageSource ImageCallMeMaybe { get; private set; }
-        //public string BodyText { get; private set; } = "Downloading Contacts...";
         public string FooterText { get; private set; } = "Developed by Rics";
 
         private string _bodyText;
@@ -62,7 +61,7 @@ namespace ContactManager.ViewModels
             BodyText = "Downloading Contacts...";
             
             LoadDataCommand = new Command(async () => await LoadData());
-            GoToHomePageCommand = new Command(() => GoToHomePage());
+            GoToHomePageCommand = new Command<ContactsPageViewModel>((vm) => GoToHomePage(vm));
         }
 
         private async Task LoadData()
@@ -72,24 +71,33 @@ namespace ContactManager.ViewModels
 
             _isDataLoaded = true;
 
-            //Set delay to  make the download message transition noticeable
+            //Set delay to  make the download message to error message transition noticeable
             await Task.Run(() =>
             {
-                Thread.Sleep(2000);
+                Thread.Sleep(500);
             });
 
             var contacts = await _contactService.GetContactsAsync();
-            if (contacts == null) { 
+            if (contacts == null)
+            {
                 IsErrorEncountered = true;
                 BodyText = "An error occurred while downloading your contacts";
             }
             else
-                GoToHomePage();
+            {
+                var contactsObs = new System.Collections.ObjectModel.ObservableCollection<ContactViewModel>();
+                foreach (var c in contacts)
+                {
+                    contactsObs.Add(new ContactViewModel(c));
+                }
+                var contactsPageVM = new ContactsPageViewModel() { Contacts = contactsObs };
+                GoToHomePage(contactsPageVM);
+            }
         }
 
-        private void GoToHomePage()
+        private void GoToHomePage(ContactsPageViewModel contactsPageVM)
         {
-            _pageService.SetCurrentPage(new HomePage());
+            _pageService.SetCurrentPage(new HomePage(contactsPageVM));
         }
     }
 }

@@ -13,9 +13,9 @@ namespace ContactManager.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomePage : TabbedPage
     {
-        public HomePage ()
+        public HomePage (ContactsPageViewModel contactsPageVM)
         {
-            Children.Add(new ContactsPage(new ContactsPageViewModel()));
+            Children.Add(new ContactsPage(contactsPageVM));
 
             Children.Add(new DialPadPage(new DialPadPageViewModel()));
 
