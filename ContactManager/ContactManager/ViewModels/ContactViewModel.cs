@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using ContactManager.Models;
 
 namespace ContactManager.ViewModels
 {
-    public class ContactViewModel : BaseViewModel
+    public class ContactViewModel : INotifyPropertyChanged
     {   
         public string ContactNumber { get; set; }
         public bool IsFavorite { get; set; }
@@ -21,23 +22,41 @@ namespace ContactManager.ViewModels
         }
 
         private string _firstName;
-
         public string FirstName
         {
             get { return _firstName; }
-            set { _firstName = value; } //TODO: add on property changed
+            set
+            {
+                if (_firstName != value)
+                {
+                    _firstName = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("FirstName"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("FullName"));
+                }
+            }
         }
 
         private string _lastName;
-
         public string LastName
         {
             get { return _lastName; }
-            set { _lastName = value; }
+            set
+            {
+                if (_lastName != value)
+                {
+                    _lastName = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("LastName"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("FullName"));
+                }
+                
+            }
         }
 
-        public string FullName {
+        public string FullName
+        {
             get { return $"{FirstName} {LastName}"; }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

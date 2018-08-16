@@ -13,7 +13,7 @@
 
             <Button Text="Proceed" IsVisible="{Binding IsErrorEncountered}" Command="{Binding GoToHomePageCommand}" HorizontalOptions="Center"/>
 
-            <Label Text="{Binding FooterText}" HorizontalTextAlignment="Center"/>
+            <Label Text="Developed by Rics" HorizontalTextAlignment="Center"/>
 
         </StackLayout>
     </ContentPage.Content>

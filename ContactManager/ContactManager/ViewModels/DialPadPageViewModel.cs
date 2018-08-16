@@ -4,9 +4,8 @@ using System.Text;
 
 namespace ContactManager.ViewModels
 {
-    public class DialPadPageViewModel : BaseViewModel
-    {
-        public string Tab { get; private set; } = "DIALPAD";
+    public class DialPadPageViewModel
+    {   
         public string Title { get; private set; } = "Dial Pad Page";
 
     }

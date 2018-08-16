@@ -14,10 +14,12 @@
 
   <ItemGroup>
     <None Remove="Images\call_me_maybe.png" />
+    <None Remove="Images\image_contact.png" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Images\call_me_maybe.png" />
+    <EmbeddedResource Include="Images\image_contact.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Views\ContactDetailPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\ContactsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

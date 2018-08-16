@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ContactManager.Views.ContactDetailPage"
+             Title="{Binding PageTitle}">
+    <ContentPage.Content>
+        <StackLayout>
+            <Image Source="{Binding ImageContact}" HorizontalOptions="Center"/>
+            <Entry Placeholder="First Name" Text="{Binding Path=Contact.FirstName}" />
+            <Entry Placeholder="Last Name" Text="{Binding Path=Contact.LastName}" />
+            <Entry Placeholder="Contact Number" Text="{Binding Path=Contact.ContactNumber}" Keyboard="Numeric" />
+            <Button Text="{Binding ButtonText}" Command="{Binding SaveContactCommand}" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

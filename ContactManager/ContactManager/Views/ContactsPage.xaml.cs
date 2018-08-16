@@ -24,5 +24,10 @@ namespace ContactManager.Views
             get { return BindingContext as ContactsPageViewModel; }
             set { BindingContext = value; }
         }
+
+        private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ViewModel.SearchContactCommand.Execute(e.NewTextValue);
+        }
     }
 }
