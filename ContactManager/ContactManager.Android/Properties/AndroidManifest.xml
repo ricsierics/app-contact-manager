@@ -1,5 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.companyname.ContactManager">
-	<uses-sdk android:minSdkVersion="19" android:targetSdkVersion="25" />
-	<application android:label="ContactManager.Android"></application>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest 
+  xmlns:android="http://schemas.android.com/apk/res/android" 
+  android:versionCode="1" 
+  android:versionName="1.0" 
+  package="com.companyname.ContactManager" 
+  android:installLocation="auto">
+	
+  <uses-sdk 
+    android:minSdkVersion="19" 
+    android:targetSdkVersion="25" />
+	
+  <application 
+    android:label="ContactManager.Android">
+  </application>
+  
+  <uses-permission android:name="android.permission.CALL_PHONE" />
+	<uses-permission android:name="android.permission.CALL_PRIVILEGED" />
+	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+	<uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+	<uses-permission android:name="android.permission.MODIFY_PHONE_STATE" />
+	  
 </manifest>

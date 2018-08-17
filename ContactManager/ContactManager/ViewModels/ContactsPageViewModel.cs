@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ContactManager.Views;
 using System.ComponentModel;
 using System.Linq;
+using ContactManager.Services;
 
 namespace ContactManager.ViewModels
 {
@@ -57,8 +58,8 @@ namespace ContactManager.ViewModels
         }
 
         private void Call(string contactNumber)
-        {
-            System.Diagnostics.Debug.WriteLine(contactNumber);
+        {   
+            DependencyService.Get<ICallService>().CallContact(contactNumber);
         }
 
         private void AddToFavorite(ContactViewModel contactViewModel)
