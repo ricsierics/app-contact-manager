@@ -33,6 +33,7 @@
                 <Setter  Property="HorizontalOptions" Value="Center" />
                 <Setter Property="BackgroundColor" Value="{StaticResource Green}"/>
                 <Setter Property="TextColor" Value="{StaticResource White}"/>
+                <Setter Property="WidthRequest" Value="150"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>

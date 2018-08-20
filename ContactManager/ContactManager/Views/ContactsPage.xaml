@@ -18,6 +18,7 @@
                 <Setter Property="HorizontalOptions" Value="StartAndExpand"/>
                 <Setter Property="FontSize" Value="Medium"/>
             </Style>
+            
         </ResourceDictionary>
     </ContentPage.Resources>
     
@@ -28,14 +29,12 @@
             
             <Label Text="{Binding Path=Contacts.Count, StringFormat='Contacts Displayed: {0}'}" BackgroundColor="{StaticResource Gray}" TextColor="{StaticResource Black}" />
 
-            <ListView
-                ItemsSource="{Binding Contacts}">
+            <ListView ItemsSource="{Binding Contacts}">
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
 
                         <ViewCell>
-
                             <ViewCell.ContextActions>
                                 <MenuItem Text="Edit" IsDestructive="False" Command="{Binding Source={x:Reference page}, Path=ViewModel.EditContactCommand}" CommandParameter="{Binding .}" />
                                 <MenuItem Text="Delete" IsDestructive="True" Command="{Binding Source={x:Reference page}, Path=ViewModel.DeleteContactCommand}" CommandParameter="{Binding .}" />
@@ -64,7 +63,6 @@
                                     </Image.GestureRecognizers>
                                 </Image>
                             </StackLayout>
-
                         </ViewCell>
                         
                     </DataTemplate>

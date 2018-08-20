@@ -12,9 +12,11 @@ namespace ContactManager.ViewModels
 {
     public class ContactsPageViewModel : INotifyPropertyChanged
     {
+        #region FIELDS/PROPERTIES
+
         private IPageService _pageService;
         private List<ContactViewModel> _contactsFull { get; set; }
-                
+
         public ObservableCollection<ContactViewModel> Contacts { get; private set; }
 
         public ICommand SearchContactCommand { get; private set; }
@@ -25,6 +27,8 @@ namespace ContactManager.ViewModels
         public ICommand DeleteContactCommand { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
 
         public ContactsPageViewModel(IPageService pageService, List<ContactViewModel> contactsFull)
         {
@@ -38,9 +42,11 @@ namespace ContactManager.ViewModels
             EditContactCommand = new Command<ContactViewModel>(async (c) => await EditContact(c));
             DeleteContactCommand = new Command<ContactViewModel>(async (c) => await DeleteContact(c));
 
-            _contactsFull = contactsFull;
-            Contacts = new ObservableCollection<ContactViewModel>(contactsFull);
+            _contactsFull = SanitizeList(contactsFull);
+            Contacts = new ObservableCollection<ContactViewModel>(SanitizeList(contactsFull));
         }
+
+        #region METHODS
 
         private void SearchContact(string keywordSearch)
         {
@@ -49,7 +55,7 @@ namespace ContactManager.ViewModels
                 Contacts = new ObservableCollection<ContactViewModel>(_contactsFull);
             }
             else
-            {   
+            {
                 var filteredContacts = _contactsFull.Where(x => x.FullName.ToUpper().Contains(keywordSearch.Trim().ToUpper()));
                 Contacts = new ObservableCollection<ContactViewModel>(filteredContacts);
             }
@@ -57,23 +63,25 @@ namespace ContactManager.ViewModels
         }
 
         private void Call(string contactNumber)
-        {   
+        {
             DependencyService.Get<ICallService>().CallContact(contactNumber);
         }
 
         private void AddToFavorite(ContactViewModel contactViewModel)
         {
-            System.Diagnostics.Debug.WriteLine("Add To Favorite");
+            System.Diagnostics.Debug.WriteLine("Add To Favorite"); //TODO
         }
 
         private async Task AddContact()
         {
             var viewModel = new ContactDetailViewModel(new ContactViewModel(), _pageService);
 
-            viewModel.ContactAdded += (source, newContact) => 
+            viewModel.ContactAdded += (source, newContact) =>
             {
                 Contacts.Add(new ContactViewModel(newContact));
                 _contactsFull.Add(new ContactViewModel(newContact));
+
+                SortList();
             };
 
             await _pageService.PushAsync(new ContactDetailPage(viewModel));
@@ -88,6 +96,8 @@ namespace ContactManager.ViewModels
                 contactViewModel.FirstName = updatedContact.FirstName;
                 contactViewModel.LastName = updatedContact.LastName;
                 contactViewModel.ContactNumber = updatedContact.ContactNumber;
+
+                SortList();
             };
 
             await _pageService.PushAsync(new ContactDetailPage(viewModel));
@@ -105,5 +115,22 @@ namespace ContactManager.ViewModels
                 //Ex: await _contactService.DeleteAsync(Map<Contact>(contactViewModel));
             }
         }
+
+        public List<ContactViewModel> SanitizeList(IList<ContactViewModel> list)
+        {
+            return list.Where(x => string.IsNullOrWhiteSpace(x.FirstName) == false
+                && string.IsNullOrWhiteSpace(x.LastName) == false
+                && string.IsNullOrWhiteSpace(x.ContactNumber) == false)
+                .ToList();
+        }
+
+        private void SortList()
+        {
+            _contactsFull.Sort((c1, c2) => string.Compare(c1.LastName, c2.LastName));
+            Contacts = new ObservableCollection<ContactViewModel>(Contacts.OrderBy(x => x.LastName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Contacts"));
+        }
+
+        #endregion
     }
 }
