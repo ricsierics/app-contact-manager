@@ -3,13 +3,34 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ContactManager.Views.ContactDetailPage"
              Title="{Binding PageTitle}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ImageDisplay" TargetType="Image">
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+                <Setter Property="VerticalOptions" Value="StartAndExpand"/>
+                <Setter Property="Aspect" Value="AspectFill"/>
+                <Setter Property="Margin" Value="0,20,0,10"/>
+                <Setter Property="HeightRequest" Value="200"/>
+                <Setter Property="WidthRequest" Value="200"/>
+            </Style>
+
+            <Style x:Key="EntryField" TargetType="Entry">
+                <Setter Property="Margin" Value="10,0,10,0"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <ContentPage.Content>
-        <StackLayout>
-            <Image Source="{Binding ImageContact}" HorizontalOptions="Center"/>
-            <Entry Placeholder="First Name" Text="{Binding Path=Contact.FirstName}" />
-            <Entry Placeholder="Last Name" Text="{Binding Path=Contact.LastName}" />
-            <Entry Placeholder="Contact Number" Text="{Binding Path=Contact.ContactNumber}" Keyboard="Numeric" />
-            <Button Text="{Binding ButtonText}" Command="{Binding SaveContactCommand}" Style="{StaticResource StyleButton}" />
-        </StackLayout>
+        <ScrollView>
+            <StackLayout Orientation="Vertical">
+                <Image Source="{Binding ImageContact}" Style="{StaticResource ImageDisplay}"/>
+                <Entry Placeholder="First Name" Text="{Binding Path=Contact.FirstName}" Style="{StaticResource EntryField}" />
+                <Entry Placeholder="Last Name" Text="{Binding Path=Contact.LastName}" Style="{StaticResource EntryField}" />
+                <Entry Placeholder="Contact Number" Text="{Binding Path=Contact.ContactNumber}" Keyboard="Numeric" Style="{StaticResource EntryField}" />
+                <Button Text="{Binding ButtonText}" Command="{Binding SaveContactCommand}" Style="{StaticResource StyleButton}" VerticalOptions="EndAndExpand" />
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
+    
 </ContentPage>

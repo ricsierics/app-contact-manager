@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ContactManager.ViewModels
+﻿namespace ContactManager.ViewModels
 {
     public class HomePageViewModel
     {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ContactManager.Services
+﻿namespace ContactManager.Services
 {
     public interface ICallService
     {

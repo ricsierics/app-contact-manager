@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ContactManager.Models
+﻿namespace ContactManager.Models
 {
     public class Contact
     {

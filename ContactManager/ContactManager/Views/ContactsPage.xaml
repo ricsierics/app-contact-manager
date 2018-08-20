@@ -5,13 +5,28 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="ContactManager.Views.ContactsPage"
     Title="CONTACTS">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="StyleContainer" TargetType="StackLayout">
+                <Setter Property="Padding" Value="10,0,10,0"/>
+            </Style>
+
+            <Style x:Key="StyleLabelRowEntry" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource Black}"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="HorizontalOptions" Value="StartAndExpand"/>
+                <Setter Property="FontSize" Value="Medium"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     
     <ContentPage.Content>
         <StackLayout>
 
             <SearchBar Placeholder="Search" TextChanged="SearchBar_TextChanged" HeightRequest="42"  />
             
-            <Label Text="{Binding Path=Contacts.Count, StringFormat='Contacts Displayed: {0}'}" />
+            <Label Text="{Binding Path=Contacts.Count, StringFormat='Contacts Displayed: {0}'}" BackgroundColor="{StaticResource Gray}" TextColor="{StaticResource Black}" />
 
             <ListView
                 ItemsSource="{Binding Contacts}">
@@ -25,11 +40,11 @@
                                 <MenuItem Text="Edit" IsDestructive="False" Command="{Binding Source={x:Reference page}, Path=ViewModel.EditContactCommand}" CommandParameter="{Binding .}" />
                                 <MenuItem Text="Delete" IsDestructive="True" Command="{Binding Source={x:Reference page}, Path=ViewModel.DeleteContactCommand}" CommandParameter="{Binding .}" />
                             </ViewCell.ContextActions>
-                            
-                            <StackLayout Orientation="Horizontal">
+
+                            <StackLayout Orientation="Horizontal" Style="{StaticResource StyleContainer}">
                                 <Image Source="account.png" />
                                 
-                                <Label Text="{Binding FullName}" TextColor="Black"  VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand" />
+                                <Label Text="{Binding FullName}" Style="{StaticResource StyleLabelRowEntry}" />
                                 
                                 <Image Source="favorite.png">
                                     <Image.GestureRecognizers>
