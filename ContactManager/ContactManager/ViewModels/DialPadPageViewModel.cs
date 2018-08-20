@@ -1,15 +1,14 @@
 ﻿using ContactManager.Services;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace ContactManager.ViewModels
 {
     public class DialPadPageViewModel : INotifyPropertyChanged
-    {   
+    {
+        private IPageService _pageService;
         private string _dialDisplay;
         public string DialDisplay
         {
@@ -30,16 +29,17 @@ namespace ContactManager.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public DialPadPageViewModel()
+        public DialPadPageViewModel(IPageService pageService)
         {
+            _pageService = pageService;
             BackspaceCommand = new Command(() => Backspace());
             DialCommand = new Command<string>((n) => Dial(n));
-            CallCommand = new Command(() => Call());
+            CallCommand = new Command(async () => await Call());
         }
 
         private void Backspace()
         {
-            if (DialDisplay.Length == 0)
+            if (string.IsNullOrWhiteSpace(DialDisplay))
                 return;
 
             DialDisplay = DialDisplay.Remove(DialDisplay.Length - 1);
@@ -50,8 +50,13 @@ namespace ContactManager.ViewModels
             DialDisplay += number;
         }
 
-        private void Call()
+        private async Task Call()
         {
+            if (string.IsNullOrWhiteSpace(DialDisplay))
+            {
+                await _pageService.DisplayAlert("Error", "No dialed number", "Ok");
+                return;
+            }
             DependencyService.Get<ICallService>().CallContact(DialDisplay);
         }
     }

@@ -17,6 +17,7 @@ namespace ContactManager.ViewModels
         private IPageService _pageService;
         private IContactService _contactService;
         private ContactsPageViewModel _contactsPageViewModel;
+        private DialPadPageViewModel _dialPadPageViewModel;
         private string _imageSourcePath { get { return "ContactManager.Images.call_me_maybe.png"; } }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -84,6 +85,7 @@ namespace ContactManager.ViewModels
                 IsErrorEncountered = true;
                 BodyText = "An error occurred while downloading your contacts";
                 _contactsPageViewModel = new ContactsPageViewModel(_pageService, contactsVM);
+                _dialPadPageViewModel = new DialPadPageViewModel(_pageService);
             }
             else
             {   
@@ -93,13 +95,14 @@ namespace ContactManager.ViewModels
                 }
 
                 _contactsPageViewModel = new ContactsPageViewModel(_pageService, contactsVM);
+                _dialPadPageViewModel = new DialPadPageViewModel(_pageService);
                 GoToHomePage();
             }
         }
         
         private void GoToHomePage()
         {   
-            _pageService.PushNew(new HomePage(_contactsPageViewModel));
+            _pageService.PushNew(new HomePage(_contactsPageViewModel, _dialPadPageViewModel));
         }
     }
 }
