@@ -7,7 +7,7 @@
         <ResourceDictionary>
             <Style x:Key="StyleContainer" TargetType="StackLayout">
                 <Setter Property="Padding" Value="10,30,10,15"/>
-                <Setter Property="BackgroundColor" Value="#4949FB"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource Violet}"/>
                 <Setter Property="Orientation" Value="Vertical"/>
             </Style>
 

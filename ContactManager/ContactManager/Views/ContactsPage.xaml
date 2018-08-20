@@ -56,7 +56,7 @@
                 </ListView.ItemTemplate>
 
             </ListView>
-            <Button Text="ADD CONTACT" Command="{Binding AddContactCommand}" />
+            <Button Text="ADD CONTACT" Command="{Binding AddContactCommand}" Style="{StaticResource StyleButton}" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

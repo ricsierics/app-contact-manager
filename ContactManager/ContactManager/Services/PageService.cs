@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Xamarin.Forms;
+using ContactManager.Services;
 
 namespace ContactManager.ViewModels
 {
@@ -14,8 +12,9 @@ namespace ContactManager.ViewModels
         }
 
         public void PushNew(Page page)
-        {
-            Application.Current.MainPage = new NavigationPage(page);
+        {   
+            Color violetColor = (Color)Application.Current.Resources["Violet"];
+            Application.Current.MainPage = new NavigationPage(page) { BarBackgroundColor = Color.FromRgb(violetColor.R, violetColor.G, violetColor.B) };
         }
 
         public async Task<Page> PopAsync()

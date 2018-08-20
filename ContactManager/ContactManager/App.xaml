@@ -8,5 +8,11 @@
         <Color x:Key="Black">#000000</Color>
         <Color x:Key="Green">#3CB716</Color>
         <Color x:Key="Gray">#E6E6E6</Color>
+        <Color x:Key="Violet">#4949FB</Color>
+
+        <Style x:Key="StyleButton" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="{StaticResource Violet}"/>
+            <Setter Property="TextColor" Value="{StaticResource White}"/>
+        </Style>
     </Application.Resources>
 </Application>

@@ -1,8 +1,9 @@
-﻿using ContactManager.Models;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using ContactManager.Models;
+using ContactManager.Services;
 
 namespace ContactManager.ViewModels
 {

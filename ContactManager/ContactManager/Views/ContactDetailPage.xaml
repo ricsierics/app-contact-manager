@@ -9,7 +9,7 @@
             <Entry Placeholder="First Name" Text="{Binding Path=Contact.FirstName}" />
             <Entry Placeholder="Last Name" Text="{Binding Path=Contact.LastName}" />
             <Entry Placeholder="Contact Number" Text="{Binding Path=Contact.ContactNumber}" Keyboard="Numeric" />
-            <Button Text="{Binding ButtonText}" Command="{Binding SaveContactCommand}" />
+            <Button Text="{Binding ButtonText}" Command="{Binding SaveContactCommand}" Style="{StaticResource StyleButton}" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
