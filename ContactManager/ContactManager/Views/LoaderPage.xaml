@@ -2,18 +2,37 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ContactManager.Views.LoaderPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="StyleContainer" TargetType="StackLayout">
+                <Setter Property="Padding" Value="10,30,10,15"/>
+                <Setter Property="BackgroundColor" Value="#4949FB"/>
+                <Setter Property="Orientation" Value="Vertical"/>
+            </Style>
+
+            <Style x:Key="StyleLabelBase" TargetType="Label">
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="TextColor" Value="White"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout Style="{StaticResource StyleContainer}">
 
-            <Image Source="{Binding ImageCallMeMaybe}" />
-            
-            <Label Text="{Binding BodyText}"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Image Source="{Binding ImageCallMeMaybe}" VerticalOptions="FillAndExpand" Aspect="AspectFit" />
 
-            <Button Text="Proceed" IsVisible="{Binding IsErrorEncountered}" Command="{Binding GoToHomePageCommand}" HorizontalOptions="Center"/>
+            <Label Text="{Binding BodyText}" Style="{StaticResource StyleLabelBase}" VerticalOptions="Center" />
 
-            <Label Text="Developed by Rics" HorizontalTextAlignment="Center"/>
+            <Button Text="PROCEED" IsVisible="{Binding IsErrorEncountered}" Command="{Binding GoToHomePageCommand}" 
+                    TextColor="{StaticResource White}" 
+                    BackgroundColor="{StaticResource Red}" 
+                    HorizontalOptions="Center" 
+                    VerticalOptions="Center" 
+                    WidthRequest="130" />
+
+            <Label Text="developed by RICS" Style="{StaticResource StyleLabelBase}" VerticalOptions="EndAndExpand"/>
 
         </StackLayout>
     </ContentPage.Content>
