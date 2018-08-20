@@ -5,13 +5,50 @@
     x:Class="ContactManager.Views.DialPadPage"
     Title="DIALPAD">
     <ContentPage.Content>
-        <StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <StackLayout Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="3" BackgroundColor="#E6E6E6">
+                <Label TextColor="Black" HorizontalOptions="StartAndExpand" VerticalOptions="Center" Text="{Binding DialDisplay}"/>
+                <Image Source="backspace.png">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer 
+                            NumberOfTapsRequired="1"
+                            Command="{Binding BackspaceCommand}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+            </StackLayout>
             
-            <Label 
-                Text="{Binding Title}"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-            
-        </StackLayout>
+            <Button Grid.Row="1" Grid.Column="0" Text="1" Command="{Binding DialCommand}" CommandParameter="1"/>
+            <Button Grid.Row="1" Grid.Column="1" Text="2" Command="{Binding DialCommand}" CommandParameter="2"/>
+            <Button Grid.Row="1" Grid.Column="2" Text="3" Command="{Binding DialCommand}" CommandParameter="3"/>
+
+            <Button Grid.Row="2" Grid.Column="0" Text="4" Command="{Binding DialCommand}" CommandParameter="4"/>
+            <Button Grid.Row="2" Grid.Column="1" Text="5" Command="{Binding DialCommand}" CommandParameter="5"/>
+            <Button Grid.Row="2" Grid.Column="2" Text="6" Command="{Binding DialCommand}" CommandParameter="6"/>
+
+            <Button Grid.Row="3" Grid.Column="0" Text="7" Command="{Binding DialCommand}" CommandParameter="7"/>
+            <Button Grid.Row="3" Grid.Column="1" Text="8" Command="{Binding DialCommand}" CommandParameter="8"/>
+            <Button Grid.Row="3" Grid.Column="2" Text="9" Command="{Binding DialCommand}" CommandParameter="9"/>
+
+            <Button Grid.Row="4" Grid.Column="0" Text="*" Command="{Binding DialCommand}" CommandParameter="*"/>
+            <Button Grid.Row="4" Grid.Column="1" Text="0" Command="{Binding DialCommand}" CommandParameter="0"/>
+            <Button Grid.Row="4" Grid.Column="2" Text="#" Command="{Binding DialCommand}" CommandParameter="#"/>
+
+            <Button Grid.Row="5" Grid.ColumnSpan="3" Text="Call" BackgroundColor="#3CB716" TextColor="#FFFFFF" Command="{Binding CallCommand}" CommandParameter="{Binding DialDisplay}"/>
+
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
