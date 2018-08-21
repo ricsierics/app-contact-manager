@@ -7,6 +7,7 @@ using ContactManager.Views;
 using System.ComponentModel;
 using System.Linq;
 using ContactManager.Services;
+using ContactManager.Extensions;
 
 namespace ContactManager.ViewModels
 {
@@ -30,6 +31,8 @@ namespace ContactManager.ViewModels
 
         #endregion
 
+        #region CONSTRUCTORS
+
         public ContactsPageViewModel(IPageService pageService, List<ContactViewModel> contactsFull)
         {
             _pageService = pageService;
@@ -43,23 +46,25 @@ namespace ContactManager.ViewModels
             DeleteContactCommand = new Command<ContactViewModel>(async (c) => await DeleteContact(c));
 
             _contactsFull = SanitizeList(contactsFull);
-            Contacts = new ObservableCollection<ContactViewModel>(SanitizeList(contactsFull));
+            Contacts = new ObservableCollection<ContactViewModel>(_contactsFull);
         }
+
+        #endregion
 
         #region METHODS
 
         private void SearchContact(string keywordSearch)
         {
+            Contacts.Clear();
             if (string.IsNullOrWhiteSpace(keywordSearch.Trim()))
             {
-                Contacts = new ObservableCollection<ContactViewModel>(_contactsFull);
+                Contacts.AddRange(_contactsFull);
             }
             else
             {
                 var filteredContacts = _contactsFull.Where(x => x.FullName.ToUpper().Contains(keywordSearch.Trim().ToUpper()));
-                Contacts = new ObservableCollection<ContactViewModel>(filteredContacts);
+                Contacts.AddRange(filteredContacts);
             }
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Contacts"));
         }
 
         private void Call(string contactNumber)

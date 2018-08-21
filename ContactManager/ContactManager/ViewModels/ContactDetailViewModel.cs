@@ -11,11 +11,11 @@ namespace ContactManager.ViewModels
     {
         private bool _isEditMode;
         private IPageService _pageService;
-        
+        private string _imageSourcePath { get { return "ContactManager.Images.image_contact.png"; } }
+
         public string PageTitle { get; private set; }
         public string ButtonText { get; private set; }
         public Contact Contact { get; private set; }
-        private string _imageSourcePath { get { return "ContactManager.Images.image_contact.png"; } } 
         public ImageSource ImageContact { get; private set; }
 
         public event EventHandler<Contact> ContactAdded;
@@ -60,21 +60,10 @@ namespace ContactManager.ViewModels
 
         private async Task SaveContact()
         {
-            if (string.IsNullOrWhiteSpace(Contact.FirstName))
+            string errorMessage = string.Empty;
+            if (!IsContactValid(out errorMessage))
             {
-                await _pageService.DisplayAlert("Error", "Please enter First Name", "Ok");
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(Contact.LastName))
-            {
-                await _pageService.DisplayAlert("Error", "Please enter Last Name", "Ok");
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(Contact.ContactNumber))
-            {
-                await _pageService.DisplayAlert("Error", "Please enter Contact Number", "Ok");
+                await _pageService.DisplayAlert("Error", errorMessage, "Ok");
                 return;
             }
 
@@ -95,6 +84,32 @@ namespace ContactManager.ViewModels
                 ContactAdded?.Invoke(this, Contact);
             }
             await _pageService.PopAsync();
+        }
+
+        private bool IsContactValid(out string errorMessage)
+        {
+            if (string.IsNullOrWhiteSpace(Contact.FirstName))
+            {
+                errorMessage = "Please enter First Name";
+                return false;
+            }
+
+            else if (string.IsNullOrWhiteSpace(Contact.LastName))
+            {
+                errorMessage = "Please enter Last Name";
+                return false;
+            }
+
+            else if (string.IsNullOrWhiteSpace(Contact.ContactNumber))
+            {
+                errorMessage = "Please enter Contact Number";
+                return false;
+            }
+            else
+            {
+                errorMessage = string.Empty;
+                return true;
+            }
         }
     }
 }
