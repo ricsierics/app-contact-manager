@@ -22,7 +22,7 @@ namespace ContactManager.ViewModels
 
         public ICommand SearchContactCommand { get; private set; }
         public ICommand CallCommand { get; private set; }
-        public ICommand AddToFavoriteCommand { get; private set; }
+        public ICommand ToggleIsFavoriteContactCommand { get; private set; }
         public ICommand AddContactCommand { get; private set; }
         public ICommand EditContactCommand { get; private set; }
         public ICommand DeleteContactCommand { get; private set; }
@@ -39,7 +39,7 @@ namespace ContactManager.ViewModels
 
             SearchContactCommand = new Command<string>((n) => SearchContact(n));
             CallCommand = new Command<string>((c) => Call(c));
-            AddToFavoriteCommand = new Command<ContactViewModel>((c) => AddToFavorite(c));
+            ToggleIsFavoriteContactCommand = new Command<ContactViewModel>((c) => ToggleIsFavoriteContact(c));
             AddContactCommand = new Command(async () => await AddContact());
 
             EditContactCommand = new Command<ContactViewModel>(async (c) => await EditContact(c));
@@ -56,7 +56,7 @@ namespace ContactManager.ViewModels
         private void SearchContact(string keywordSearch)
         {
             Contacts.Clear();
-            if (string.IsNullOrWhiteSpace(keywordSearch.Trim()))
+            if (string.IsNullOrWhiteSpace(keywordSearch))
             {
                 Contacts.AddRange(_contactsFull);
             }
@@ -72,18 +72,18 @@ namespace ContactManager.ViewModels
             DependencyService.Get<ICallService>().CallContact(contactNumber);
         }
 
-        private void AddToFavorite(ContactViewModel contactViewModel)
+        private void ToggleIsFavoriteContact(ContactViewModel contactViewModel)
         {
-            System.Diagnostics.Debug.WriteLine("Add To Favorite"); //TODO
+            contactViewModel.IsFavorite = !contactViewModel.IsFavorite;
+            SortList();
         }
 
         private async Task AddContact()
         {
-            var viewModel = new ContactDetailViewModel(new ContactViewModel(), _pageService);
+            var viewModel = new ContactDetailPageViewModel(new ContactViewModel(), _pageService);
 
             viewModel.ContactAdded += (source, newContact) =>
             {
-                Contacts.Add(new ContactViewModel(newContact));
                 _contactsFull.Add(new ContactViewModel(newContact));
 
                 SortList();
@@ -94,13 +94,14 @@ namespace ContactManager.ViewModels
 
         private async Task EditContact(ContactViewModel contactViewModel)
         {
-            var viewModel = new ContactDetailViewModel(contactViewModel, _pageService);
+            var viewModel = new ContactDetailPageViewModel(contactViewModel, _pageService);
 
             viewModel.ContactUpdated += (source, updatedContact) =>
             {
-                contactViewModel.FirstName = updatedContact.FirstName;
-                contactViewModel.LastName = updatedContact.LastName;
-                contactViewModel.ContactNumber = updatedContact.ContactNumber;
+                var oldContact = _contactsFull.Find(x => x.Equals(contactViewModel));
+                oldContact.FirstName = updatedContact.FirstName;
+                oldContact.LastName = updatedContact.LastName;
+                oldContact.ContactNumber = updatedContact.ContactNumber;
 
                 SortList();
             };
@@ -131,8 +132,8 @@ namespace ContactManager.ViewModels
 
         private void SortList()
         {
-            _contactsFull.Sort((c1, c2) => string.Compare(c1.LastName, c2.LastName));
-            Contacts = new ObservableCollection<ContactViewModel>(Contacts.OrderBy(x => x.LastName));
+            _contactsFull = _contactsFull.OrderBy(x => x.IsFavorite).ThenBy(y => y.LastName).ToList();
+            Contacts = new ObservableCollection<ContactViewModel>(_contactsFull);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Contacts"));
         }
 

@@ -44,12 +44,12 @@
                                 <Image Source="account.png" />
                                 
                                 <Label Text="{Binding FullName}" Style="{StaticResource StyleLabelRowEntry}" />
-                                
-                                <Image Source="favorite.png">
+
+                                <Image Source="{Binding IsFavoriteImagePath}">
                                     <Image.GestureRecognizers>
                                         <TapGestureRecognizer 
                                             NumberOfTapsRequired="1" 
-                                            Command="{Binding Source={x:Reference page}, Path=ViewModel.AddToFavoriteCommand}" 
+                                            Command="{Binding Source={x:Reference page}, Path=ViewModel.ToggleIsFavoriteContactCommand}" 
                                             CommandParameter="{Binding .}" />
                                     </Image.GestureRecognizers>
                                 </Image>

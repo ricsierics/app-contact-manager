@@ -7,7 +7,7 @@ namespace ContactManager.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ContactDetailPage : ContentPage
 	{
-		public ContactDetailPage (ContactDetailViewModel viewModel)
+		public ContactDetailPage (ContactDetailPageViewModel viewModel)
 		{
 			InitializeComponent ();
 

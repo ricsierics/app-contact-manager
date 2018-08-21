@@ -5,9 +5,6 @@ namespace ContactManager.ViewModels
 {
     public class ContactViewModel : INotifyPropertyChanged
     {   
-        public string ContactNumber { get; set; }
-        public bool IsFavorite { get; set; }
-
         public ContactViewModel() {}
 
         public ContactViewModel(Contact c)
@@ -18,6 +15,8 @@ namespace ContactManager.ViewModels
             IsFavorite = c.IsFavorite;
         }
 
+        public string ContactNumber { get; set; }
+        
         private string _firstName;
         public string FirstName
         {
@@ -49,6 +48,29 @@ namespace ContactManager.ViewModels
             }
         }
 
+        private bool _isFavorite;
+        public bool IsFavorite
+        {
+            get { return _isFavorite; }
+            set
+            {
+                if (_isFavorite != value)
+                {
+                    _isFavorite = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsFavorite"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsFavoriteImagePath"));
+                }
+            }
+        }
+
+        public string IsFavoriteImagePath
+        {
+            get
+            {
+                return IsFavorite ? "favorite_active.png" : "favorite_inactive.png";
+            }
+        }
+        
         public string FullName
         {
             get { return $"{FirstName} {LastName}"; }

@@ -7,7 +7,7 @@ using ContactManager.Services;
 
 namespace ContactManager.ViewModels
 {
-    public class ContactDetailViewModel
+    public class ContactDetailPageViewModel
     {
         private bool _isEditMode;
         private IPageService _pageService;
@@ -24,7 +24,7 @@ namespace ContactManager.ViewModels
 
         public ICommand SaveContactCommand { get; set; }
 
-        public ContactDetailViewModel(ContactViewModel contactViewModel, IPageService pageService)
+        public ContactDetailPageViewModel(ContactViewModel contactViewModel, IPageService pageService)
         {
             if (string.IsNullOrWhiteSpace(contactViewModel.FirstName))
                 _isEditMode = false;
