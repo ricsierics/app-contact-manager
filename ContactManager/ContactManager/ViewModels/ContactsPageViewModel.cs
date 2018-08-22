@@ -132,7 +132,7 @@ namespace ContactManager.ViewModels
 
         private void SortList()
         {
-            _contactsNoFilter = _contactsNoFilter.OrderBy(x => x.IsFavorite).ThenBy(y => y.LastName).ToList();
+            _contactsNoFilter = _contactsNoFilter.OrderByDescending(x => x.IsFavorite).ThenBy(y => y.LastName).ToList();
             Contacts = new ObservableCollection<ContactViewModel>(_contactsNoFilter);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Contacts"));
         }

@@ -109,10 +109,10 @@
     <AndroidResource Include="Resources\drawable\backspace.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\favorite_active.png" />
+    <AndroidResource Include="Resources\drawable\favorite_inactive.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\favorite_inactive.png" />
+    <AndroidResource Include="Resources\drawable\favorite_active.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>
