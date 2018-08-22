@@ -10,8 +10,7 @@ using ContactManager.Services;
 namespace ContactManager.ViewModels
 {
     public class LoaderPageViewModel : INotifyPropertyChanged
-    {
-        private bool _isDataLoaded;
+    {   
         private IPageService _pageService;
         private IContactService _contactService;
         private ContactsPageViewModel _contactsPageViewModel;
@@ -65,11 +64,6 @@ namespace ContactManager.ViewModels
 
         private async Task LoadData()
         {
-            if (_isDataLoaded)
-                return;
-
-            _isDataLoaded = true;
-
             //Set delay to  make the download message to error message transition noticeable
             await Task.Run(() =>
             {

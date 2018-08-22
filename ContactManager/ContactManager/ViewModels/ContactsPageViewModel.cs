@@ -16,12 +16,12 @@ namespace ContactManager.ViewModels
         #region FIELDS/PROPERTIES
 
         private IPageService _pageService;
-        private List<ContactViewModel> _contactsFull { get; set; }
+        private List<ContactViewModel> _contactsNoFilter { get; set; }
 
         public ObservableCollection<ContactViewModel> Contacts { get; private set; }
 
         public ICommand SearchContactCommand { get; private set; }
-        public ICommand CallCommand { get; private set; }
+        public ICommand CallContactCommand { get; private set; }
         public ICommand ToggleIsFavoriteContactCommand { get; private set; }
         public ICommand AddContactCommand { get; private set; }
         public ICommand EditContactCommand { get; private set; }
@@ -33,20 +33,20 @@ namespace ContactManager.ViewModels
 
         #region CONSTRUCTORS
 
-        public ContactsPageViewModel(IPageService pageService, List<ContactViewModel> contactsFull)
+        public ContactsPageViewModel(IPageService pageService, List<ContactViewModel> contactsNoFilter)
         {
             _pageService = pageService;
 
             SearchContactCommand = new Command<string>((n) => SearchContact(n));
-            CallCommand = new Command<string>((c) => Call(c));
+            CallContactCommand = new Command<string>((c) => CallContact(c));
             ToggleIsFavoriteContactCommand = new Command<ContactViewModel>((c) => ToggleIsFavoriteContact(c));
             AddContactCommand = new Command(async () => await AddContact());
 
             EditContactCommand = new Command<ContactViewModel>(async (c) => await EditContact(c));
             DeleteContactCommand = new Command<ContactViewModel>(async (c) => await DeleteContact(c));
 
-            _contactsFull = SanitizeList(contactsFull);
-            Contacts = new ObservableCollection<ContactViewModel>(_contactsFull);
+            _contactsNoFilter = SanitizeList(contactsNoFilter);
+            Contacts = new ObservableCollection<ContactViewModel>(_contactsNoFilter);
         }
 
         #endregion
@@ -58,16 +58,16 @@ namespace ContactManager.ViewModels
             Contacts.Clear();
             if (string.IsNullOrWhiteSpace(keywordSearch))
             {
-                Contacts.AddRange(_contactsFull);
+                Contacts.AddRange(_contactsNoFilter);
             }
             else
             {
-                var filteredContacts = _contactsFull.Where(x => x.FullName.ToUpper().Contains(keywordSearch.Trim().ToUpper()));
+                var filteredContacts = _contactsNoFilter.Where(x => x.FullName.ToUpper().Contains(keywordSearch.Trim().ToUpper()));
                 Contacts.AddRange(filteredContacts);
             }
         }
 
-        private void Call(string contactNumber)
+        private void CallContact(string contactNumber)
         {
             DependencyService.Get<ICallService>().CallContact(contactNumber);
         }
@@ -84,7 +84,7 @@ namespace ContactManager.ViewModels
 
             viewModel.ContactAdded += (source, newContact) =>
             {
-                _contactsFull.Add(new ContactViewModel(newContact));
+                _contactsNoFilter.Add(new ContactViewModel(newContact));
 
                 SortList();
             };
@@ -98,7 +98,7 @@ namespace ContactManager.ViewModels
 
             viewModel.ContactUpdated += (source, updatedContact) =>
             {
-                var oldContact = _contactsFull.Find(x => x.Equals(contactViewModel));
+                var oldContact = _contactsNoFilter.Find(x => x.Equals(contactViewModel));
                 oldContact.FirstName = updatedContact.FirstName;
                 oldContact.LastName = updatedContact.LastName;
                 oldContact.ContactNumber = updatedContact.ContactNumber;
@@ -115,7 +115,7 @@ namespace ContactManager.ViewModels
             if (await _pageService.DisplayAlert("Warning", $"Are you sure you want to delete {contactViewModel.FullName}?", "Yes", "No"))
             {
                 Contacts.Remove(contactViewModel);
-                _contactsFull.Remove(contactViewModel);
+                _contactsNoFilter.Remove(contactViewModel);
 
                 //Call Service or Persistence layer to delete the contact asynchonously
                 //Ex: await _contactService.DeleteAsync(Map<Contact>(contactViewModel));
@@ -132,8 +132,8 @@ namespace ContactManager.ViewModels
 
         private void SortList()
         {
-            _contactsFull = _contactsFull.OrderBy(x => x.IsFavorite).ThenBy(y => y.LastName).ToList();
-            Contacts = new ObservableCollection<ContactViewModel>(_contactsFull);
+            _contactsNoFilter = _contactsNoFilter.OrderBy(x => x.IsFavorite).ThenBy(y => y.LastName).ToList();
+            Contacts = new ObservableCollection<ContactViewModel>(_contactsNoFilter);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Contacts"));
         }
 

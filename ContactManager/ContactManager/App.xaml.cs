@@ -1,3 +1,5 @@
+using ContactManager.Services;
+using ContactManager.ViewModels;
 using ContactManager.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -10,7 +12,10 @@ namespace ContactManager
 		public App ()
 		{
 			InitializeComponent();
-            MainPage = new LoaderPage();
+
+            var pageService = new PageService();
+            var contactService = new ContactService();
+            MainPage = new LoaderPage(new LoaderPageViewModel(pageService, contactService));
         }
 
 		protected override void OnStart ()
