@@ -4,6 +4,10 @@
              x:Class="ContactManager.Views.ContactDetailPage"
              Title="{Binding PageTitle}">
 
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0,20,0,0" />
+    </ContentPage.Padding>
+
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="ImageDisplay" TargetType="Image">

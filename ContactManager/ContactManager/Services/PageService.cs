@@ -14,7 +14,12 @@ namespace ContactManager.ViewModels
         public void PushNew(Page page)
         {   
             Color violetColor = (Color)Application.Current.Resources["Violet"];
-            Application.Current.MainPage = new NavigationPage(page) { BarBackgroundColor = Color.FromRgb(violetColor.R, violetColor.G, violetColor.B) };
+            Color whiteColor = (Color)Application.Current.Resources["White"];
+            Application.Current.MainPage = new NavigationPage(page)
+            {
+                BarBackgroundColor = Color.FromRgb(violetColor.R, violetColor.G, violetColor.B),
+                BarTextColor = Color.FromRgb(whiteColor.R, whiteColor.G, whiteColor.B)
+            };
         }
 
         public async Task<Page> PopAsync()

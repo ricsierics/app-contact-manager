@@ -6,6 +6,10 @@
     x:Class="ContactManager.Views.ContactsPage"
     Title="CONTACTS">
 
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0,20,0,0" />
+    </ContentPage.Padding>
+    
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="StyleContainer" TargetType="StackLayout">
