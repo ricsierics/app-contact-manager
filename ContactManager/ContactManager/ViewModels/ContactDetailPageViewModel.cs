@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using ContactManager.Models;
 using ContactManager.Services;
+using System.Collections.Generic;
 
 namespace ContactManager.ViewModels
 {
@@ -11,6 +12,8 @@ namespace ContactManager.ViewModels
     {
         private bool _isEditMode;
         private IPageService _pageService;
+        private IList<ContactViewModel> _contacts;
+        private ContactViewModel _contactViewModel;
         private string _imageSourcePath { get { return "ContactManager.Images.image_contact.png"; } }
 
         public string PageTitle { get; private set; }
@@ -24,26 +27,28 @@ namespace ContactManager.ViewModels
 
         public ICommand SaveContactCommand { get; set; }
 
-        public ContactDetailPageViewModel(ContactViewModel contactViewModel, IPageService pageService)
+        public ContactDetailPageViewModel(ContactViewModel contactViewModel, IPageService pageService, IList<ContactViewModel> contacts)
         {
-            if (string.IsNullOrWhiteSpace(contactViewModel.FirstName))
-                _isEditMode = false;
-            else
-                _isEditMode = true;
-
-            BindUIValues(_isEditMode);
-
-            Contact = new Contact();
-            Contact.FirstName = contactViewModel.FirstName;
-            Contact.LastName = contactViewModel.LastName;
-            Contact.ContactNumber = contactViewModel.ContactNumber;
-           
+            _contactViewModel = contactViewModel;
             _pageService = pageService;
+            _contacts = contacts;
 
+            SetMode();
+            BindUIValuesBasedOnMode();
+            BindContact();
+         
             SaveContactCommand = new Command(async () => await SaveContact());
         }
 
-        private void BindUIValues(bool mode)
+        private void SetMode()
+        {
+            if (string.IsNullOrWhiteSpace(_contactViewModel.FirstName))
+                _isEditMode = false;
+            else
+                _isEditMode = true;
+        }
+
+        private void BindUIValuesBasedOnMode()
         {
             ImageContact = ImageSource.FromResource(_imageSourcePath);
             if (_isEditMode)
@@ -56,6 +61,14 @@ namespace ContactManager.ViewModels
                 PageTitle = "Add Contact";
                 ButtonText = "Save";
             }
+        }
+
+        private void BindContact()
+        {
+            Contact = new Contact();
+            Contact.FirstName = _contactViewModel.FirstName;
+            Contact.LastName = _contactViewModel.LastName;
+            Contact.ContactNumber = _contactViewModel.ContactNumber;
         }
 
         private async Task SaveContact()
@@ -73,7 +86,7 @@ namespace ContactManager.ViewModels
                 //Ex: await _contactService.AddContactAsync(Contact);
                 //Ex: await _contactStore.AddContactAsync(Contact);
 
-                ContactUpdated?.Invoke(this, Contact);
+                ContactUpdated?.Invoke(this, Contact.Trim());
             }
             else
             {
@@ -81,7 +94,7 @@ namespace ContactManager.ViewModels
                 //Ex: await _contactService.UpdateContactAsync(Contact);
                 //Ex: await _contactStore.UpdateContactAsync(Contact);
 
-                ContactAdded?.Invoke(this, Contact);
+                ContactAdded?.Invoke(this, Contact.Trim());
             }
             await _pageService.PopAsync();
         }
@@ -105,11 +118,48 @@ namespace ContactManager.ViewModels
                 errorMessage = "Please enter Contact Number";
                 return false;
             }
+            else if (HasDuplicate())
+            {
+                errorMessage = "Duplicate contact";
+                return false;
+            }
             else
             {
                 errorMessage = string.Empty;
                 return true;
             }
+        }
+
+        private bool HasDuplicate()
+        {
+            if (!_isEditMode || (_isEditMode && IsContactValueChanged()))
+            {
+                var contactInSubject = new ContactViewModel(Contact.Trim());
+
+                foreach (var listedContact in _contacts)
+                {
+                    if (listedContact.FirstName.ToUpper() == contactInSubject.FirstName.ToUpper()
+                        && listedContact.LastName.ToUpper() == contactInSubject.LastName.ToUpper()
+                        && listedContact.ContactNumber == contactInSubject.ContactNumber)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private bool IsContactValueChanged()
+        {
+            var contactInSubject = new ContactViewModel(Contact.Trim());
+
+            if (_contactViewModel.FirstName.ToUpper() == contactInSubject.FirstName.ToUpper()
+                && _contactViewModel.LastName.ToUpper() == contactInSubject.LastName.ToUpper()
+                && _contactViewModel.ContactNumber == contactInSubject.ContactNumber)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

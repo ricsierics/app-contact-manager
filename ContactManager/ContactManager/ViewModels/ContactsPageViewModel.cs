@@ -16,7 +16,7 @@ namespace ContactManager.ViewModels
         #region FIELDS/PROPERTIES
 
         private IPageService _pageService;
-        private List<ContactViewModel> _contactsNoFilter { get; set; }
+        private List<ContactViewModel> _contactsNoFilter; 
 
         public ObservableCollection<ContactViewModel> Contacts { get; private set; }
 
@@ -33,15 +33,14 @@ namespace ContactManager.ViewModels
 
         #region CONSTRUCTORS
 
-        public ContactsPageViewModel(IPageService pageService, List<ContactViewModel> contactsNoFilter)
+        public ContactsPageViewModel(IPageService pageService, IList<ContactViewModel> contactsNoFilter)
         {
             _pageService = pageService;
-
+            
             SearchContactCommand = new Command<string>((n) => SearchContact(n));
             CallContactCommand = new Command<string>((c) => CallContact(c));
             ToggleIsFavoriteContactCommand = new Command<ContactViewModel>((c) => ToggleIsFavoriteContact(c));
             AddContactCommand = new Command(async () => await AddContact());
-
             EditContactCommand = new Command<ContactViewModel>(async (c) => await EditContact(c));
             DeleteContactCommand = new Command<ContactViewModel>(async (c) => await DeleteContact(c));
 
@@ -80,12 +79,11 @@ namespace ContactManager.ViewModels
 
         private async Task AddContact()
         {
-            var viewModel = new ContactDetailPageViewModel(new ContactViewModel(), _pageService);
+            var viewModel = new ContactDetailPageViewModel(new ContactViewModel(), _pageService, _contactsNoFilter);
 
             viewModel.ContactAdded += (source, newContact) =>
             {
                 _contactsNoFilter.Add(new ContactViewModel(newContact));
-
                 SortList();
             };
 
@@ -94,7 +92,7 @@ namespace ContactManager.ViewModels
 
         private async Task EditContact(ContactViewModel contactViewModel)
         {
-            var viewModel = new ContactDetailPageViewModel(contactViewModel, _pageService);
+            var viewModel = new ContactDetailPageViewModel(contactViewModel, _pageService, _contactsNoFilter);
 
             viewModel.ContactUpdated += (source, updatedContact) =>
             {
@@ -102,7 +100,6 @@ namespace ContactManager.ViewModels
                 oldContact.FirstName = updatedContact.FirstName;
                 oldContact.LastName = updatedContact.LastName;
                 oldContact.ContactNumber = updatedContact.ContactNumber;
-
                 SortList();
             };
 

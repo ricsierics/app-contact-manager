@@ -32,7 +32,7 @@
                     VerticalOptions="Center" 
                     WidthRequest="130" />
 
-            <Label Text="developed by RICS" Style="{StaticResource StyleLabelBase}" VerticalOptions="EndAndExpand"/>
+            <Label Text="Developed by RICS" Style="{StaticResource StyleLabelBase}" VerticalOptions="EndAndExpand"/>
 
         </StackLayout>
     </ContentPage.Content>
